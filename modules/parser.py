@@ -1,5 +1,6 @@
 import sys
 import datetime as dt
+from pprint import pprint
 
 import requests
 
@@ -75,10 +76,14 @@ def parsed_data(data):
     return parsed_data
 
 
-def run(coin, currency, exchange):
+def run_parser(coin, currency, exchange, verbose=False):
     all_data = get_data(coin, currency, exchange)
     parsed = parsed_data(all_data)
     parsed["symbol"] = f"{coin}/{currency}"
     parsed["exchange"] = exchange
 
-    return parsed
+    if verbose:
+        pprint(parsed)
+        return parsed
+    else:
+        return parsed
