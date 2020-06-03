@@ -1,6 +1,5 @@
 import sys
 import datetime as dt
-from pprint import pprint
 
 import requests
 
@@ -76,6 +75,10 @@ def parsed_data(data):
     return parsed_data
 
 
-if __name__ == "__main__":
-    data = get_data("ETH", "EUR", "kraken")
-    pprint(parsed_data(data))
+def run(coin, currency, exchange):
+    all_data = get_data(coin, currency, exchange)
+    parsed = parsed_data(all_data)
+    parsed["symbol"] = f"{coin}/{currency}"
+    parsed["exchange"] = exchange
+
+    return parsed
