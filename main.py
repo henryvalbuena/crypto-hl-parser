@@ -36,14 +36,14 @@ def get_data(coin, currency, exchange):
 
 def parsed_data(data):
     parsed_data = {
-        "seven_day_high": 0.0,
-        "seven_day_low": 0.0,
-        "one_month_high": 0.0,
-        "one_month_low": 0.0,
-        "six_month_high": 0.0,
-        "six_month_low": 0.0,
-        "one_year_high": 0.0,
-        "one_year_low": 0.0,
+        "seven_day_high": MIN_F,
+        "seven_day_low": MAX_F,
+        "one_month_high": MIN_F,
+        "one_month_low": MAX_F,
+        "six_month_high": MIN_F,
+        "six_month_low": MAX_F,
+        "one_year_high": MIN_F,
+        "one_year_low": MAX_F,
         "all_time_high": MIN_F,
         "all_time_low": MAX_F,
     }
@@ -54,25 +54,21 @@ def parsed_data(data):
 
     for d in data:
         # check the date for one year
-        if d["time"] == one_year_ago:
-            parsed_data["one_year_high"] = d["high"]
-            parsed_data["one_year_low"] = d["low"]
-            print(f"one_year_high assigned: h: {d['high']} l: {d['low']}")
+        if d["time"] >= one_year_ago:
+            parsed_data["one_year_high"] = max(d["high"], parsed_data["one_year_high"])
+            parsed_data["one_year_low"] = min(d["low"], parsed_data["one_year_low"])
         # check the date for six months
-        if d["time"] == six_month_ago:
-            parsed_data["six_month_high"] = d["high"]
-            parsed_data["six_month_low"] = d["low"]
-            print(f"six_month_high assigned: h: {d['high']} l: {d['low']}")
+        if d["time"] >= six_month_ago:
+            parsed_data["six_month_high"] = max(d["high"], parsed_data["six_month_high"])
+            parsed_data["six_month_low"] = min(d["low"], parsed_data["six_month_low"])
         # check the date for one month
-        if d["time"] == one_month_ago:
-            parsed_data["one_month_high"] = d["high"]
-            parsed_data["one_month_low"] = d["low"]
-            print(f"one_month_high assigned: h: {d['high']} l: {d['low']}")
+        if d["time"] >= one_month_ago:
+            parsed_data["one_month_high"] = max(d["high"], parsed_data["one_month_high"])
+            parsed_data["one_month_low"] = min(d["low"], parsed_data["one_month_low"])
         # check the date for seven days
-        if d["time"] == seven_days_ago:
-            parsed_data["seven_day_high"] = d["high"]
-            parsed_data["seven_day_low"] = d["low"]
-            print(f"seven_day_low assigned: h: {d['high']} l: {d['low']}")
+        if d["time"] >= seven_days_ago:
+            parsed_data["seven_day_high"] = max(d["high"], parsed_data["seven_day_high"])
+            parsed_data["seven_day_low"] = min(d["low"], parsed_data["seven_day_low"])
         # check all time
         parsed_data["all_time_high"] = max(parsed_data["all_time_high"], d["high"])
         parsed_data["all_time_low"] = min(parsed_data["all_time_low"], d["low"])
@@ -81,5 +77,5 @@ def parsed_data(data):
 
 
 if __name__ == "__main__":
-    data = get_data("BTC", "EUR", "kraken")
+    data = get_data("ETH", "EUR", "kraken")
     pprint(parsed_data(data))
