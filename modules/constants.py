@@ -1,0 +1,6 @@
+YEAR = 31536000
+SIX_MONTH = 4320000
+MONTH = 2630000
+SEVEN_DAYS = 604800
+DAY = 86400
+URI = "min-api.cryptocompare.com"
